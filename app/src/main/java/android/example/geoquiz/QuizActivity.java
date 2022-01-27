@@ -23,6 +23,25 @@ public class QuizActivity extends AppCompatActivity {
             new Question(R.string.question_5, false),
     };
 
+    //Update Next Question function
+    private void updateQuestion(){
+        int question = mQuestionBank[mCurrIndex].getmTextResId();
+        mQuestionTextView.setText(question);
+    }
+
+    //Check if the answer is correct
+    private void checkAnswer(Boolean userPressedTrue){
+        boolean answerIsTrue = mQuestionBank[mCurrIndex].ismAnswerTrue();
+        int messageResId = 0;
+
+        if(userPressedTrue == answerIsTrue)
+            messageResId = R.string.correct_toast;
+        else
+            messageResId = R.string.incorrect_toast;
+
+        Toast.makeText(this, messageResId, Toast.LENGTH_SHORT).show();
+    }
+
     private int mCurrIndex = 0;
 
     @Override
@@ -31,8 +50,6 @@ public class QuizActivity extends AppCompatActivity {
         setContentView(R.layout.activity_quiz);
 
         mQuestionTextView = (TextView)findViewById(R.id.question_text_view);
-        int question = mQuestionBank[mCurrIndex].getmTextResId();
-        mQuestionTextView.setText(question);
 
         //Getting References to Widgets
         //Method calls  Casting Button      Passing the resource ID
@@ -48,8 +65,7 @@ public class QuizActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //Execute code goes here...
                 mCurrIndex = (mCurrIndex + 1) % mQuestionBank.length;
-                int question = mQuestionBank[mCurrIndex].getmTextResId();
-                mQuestionTextView.setText(question);
+                updateQuestion();
             }
         });
 
@@ -58,9 +74,7 @@ public class QuizActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //Execute code goes here...
-                Toast.makeText(QuizActivity.this,
-                        R.string.correct_toast,
-                        Toast.LENGTH_SHORT).show();
+                checkAnswer(true);
             }
         });
 
@@ -69,9 +83,7 @@ public class QuizActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //Execute code goes here...
-                Toast.makeText(QuizActivity.this,
-                        R.string.incorrect_toast,
-                        Toast.LENGTH_SHORT).show();
+                checkAnswer(false);
             }
         });
 
